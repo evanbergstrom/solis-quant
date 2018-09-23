@@ -1,3 +1,17 @@
+/*
+ Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl
+ Copyright (C) 2018 Evan Bergstrom
+
+ This file is provided under the BSD open software license. This is a port of QuantLib,
+ a free-software/open-source library for financial quantitative analysts and developers
+ (http://quantlib.org/) to Scala. The basic structure and design of the library has been
+ preserved, but the naming conventions, types, collection classes and implementation
+ have been modified to support common Scala idioms.
+
+ See the full license in the license file (LICENSE.txt)
+*/
+
 package com.soliscode.finance.quant.time.daycounters
 
 import java.time.LocalDate
@@ -30,7 +44,7 @@ abstract class Thirty360 extends DayCounter {
 class Thirty360Us extends Thirty360 {
   override def name: String = "30/360 (Bond Basis)"
 
-  override def dayCount(start: LocalDate, end: LocalDate): Int = {
+  override def dayCount(start: LocalDate, end: LocalDate): Long = {
     var (startDOM, endDOM) = (start.getDayOfMonth, end.getDayOfMonth)
     var (startM, endM) = (start.getMonthValue, end.getMonthValue)
     val (startY, endY) = (start.getYear, end.getYear)
@@ -48,7 +62,7 @@ class Thirty360Us extends Thirty360 {
 class Thirty360Eu extends Thirty360 {
   override def name: String = "30/360 (Eurobond Basis)"
 
-  override def dayCount(start: LocalDate, end: LocalDate): Int = {
+  override def dayCount(start: LocalDate, end: LocalDate): Long = {
     val (startDOM, endDOM) = (start.getDayOfMonth, end.getDayOfMonth)
     val (startM, endM) = (start.getMonthValue, end.getMonthValue)
     val (startY, endY) = (start.getYear, end.getYear)
@@ -60,7 +74,7 @@ class Thirty360Eu extends Thirty360 {
 class Thirty360It extends Thirty360 {
   override def name: String = "30/360 (Italian)"
 
-  override def dayCount(start: LocalDate, end: LocalDate): Int = {
+  override def dayCount(start: LocalDate, end: LocalDate): Long = {
     var (startDOM, endDOM) = (start.getDayOfMonth, end.getDayOfMonth)
     val (startM, endM) = (start.getMonthValue, end.getMonthValue)
     val (startY, endY) = (start.getYear, end.getYear)

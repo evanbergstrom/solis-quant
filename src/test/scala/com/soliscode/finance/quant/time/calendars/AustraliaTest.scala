@@ -1,11 +1,11 @@
 package com.soliscode.finance.quant.time.calendars
 
-import java.time.{LocalDate, Month}
+import java.time.LocalDate
 import java.time.Month._
 
-import org.scalatest.FlatSpec
+import com.soliscode.finance.quant.QuantSpec
 
-class AustraliaTest extends FlatSpec {
+class AustraliaTest extends QuantSpec {
 
   "isNormalBusinessDay" should "return false for observed New Year's Day holiday" in {
     val australia = new Australia

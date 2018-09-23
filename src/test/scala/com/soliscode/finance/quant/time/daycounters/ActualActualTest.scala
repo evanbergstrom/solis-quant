@@ -1,13 +1,13 @@
 package com.soliscode.finance.quant.time.daycounters
 
 import java.time.LocalDate
-
-import com.soliscode.finance.quant.time.Schedule
-import com.soliscode.finance.quant.time.daycounters.ActualActual.{Isda, Isma}
-import org.scalatest.FlatSpec
 import java.time.Month._
 
-class ActualActualTest extends FlatSpec {
+import com.soliscode.finance.quant.QuantSpec
+import com.soliscode.finance.quant.time.Schedule
+import com.soliscode.finance.quant.time.daycounters.ActualActual.{Isda, Isma}
+
+class ActualActualTest extends QuantSpec {
 
   "ActualActual(ISDA)" should "handle normal calculation periods" in {
     val dc = ActualActual(Isda, Schedule())

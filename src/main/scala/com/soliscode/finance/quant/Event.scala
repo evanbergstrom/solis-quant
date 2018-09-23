@@ -1,18 +1,25 @@
-package com.soliscode.finance.quant
+/*
+ Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl
+ Copyright (C) 2018 Evan Bergstrom
+
+ This file is provided under the BSD open software license. This is a port of QuantLib,
+ a free-software/open-source library for financial quantitative analysts and developers
+ (http://quantlib.org/) to Scala. The basic structure and design of the library has been
+ preserved, but the naming conventions, types, collection classes and implementation
+ have been modified to support common Scala idioms.
+
+ See the full license in the license file (LICENSE.txt)
+*/package com.soliscode.finance.quant
 
 import java.time.LocalDate
 
-import com.soliscode.finance.quant.patterns.Visitor
+import com.soliscode.finance.quant.patterns.{Visitable, Visitor}
 
-import scala.reflect.runtime.universe._
+trait Event extends Visitable {
+  val date: LocalDate
 
-trait Event {
-
-  def date(): LocalDate
   def hasOccurred(refDate: LocalDate, includeRefDate: Boolean): Boolean
 
-  def accept[T : TypeTag](visitor: Visitor[T]) : Unit = typeOf[T] match {
-    case t if t =:= typeOf[Event] => visitor.asInstanceOf[Visitor[Event]].visit(this)
-    case _ => throw new IllegalArgumentException(s"${visitor.getClass} is not an ${classOf[Event]} visitor")
-  }
+  override def accept(v: Visitor): Unit = v.visit(this)
 }

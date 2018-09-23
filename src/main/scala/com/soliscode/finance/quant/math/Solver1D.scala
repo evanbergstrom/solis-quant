@@ -1,9 +1,23 @@
 package com.soliscode.finance.quant.math
 
-import Doubles._
+import com.soliscode.finance.quant.math.Doubles._
+/*
+ Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl
+ Copyright (C) 2018 Evan Bergstrom
+
+ This file is provided under the BSD open software license. This is a port of QuantLib,
+ a free-software/open-source library for financial quantitative analysts and developers
+ (http://quantlib.org/) to Scala. The basic structure and design of the library has been
+ preserved, but the naming conventions, types, collection classes and implementation
+ have been modified to support common Scala idioms.
+
+ See the full license in the license file (LICENSE.txt)
+*/
+
 import com.soliscode.finance.quant.math.errors.ConvergenceFailureException
 
-import math._
+import scala.math._
 
 abstract class Solver1D(val maxEvaluations: Long,
                         val lowerBound: Double,

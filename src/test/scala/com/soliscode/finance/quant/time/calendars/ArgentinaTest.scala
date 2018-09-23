@@ -1,7 +1,7 @@
 package com.soliscode.finance.quant.time.calendars
 
-import org.scalatest.FlatSpec
+import com.soliscode.finance.quant.QuantSpec
 
-class ArgentinaTest extends FlatSpec {
+class ArgentinaTest extends QuantSpec {
 
 }

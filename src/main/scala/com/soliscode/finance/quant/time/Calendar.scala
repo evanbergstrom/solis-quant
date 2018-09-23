@@ -1,12 +1,26 @@
+/*
+ Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl
+ Copyright (C) 2018 Evan Bergstrom
+
+ This file is provided under the BSD open software license. This is a port of QuantLib,
+ a free-software/open-source library for financial quantitative analysts and developers
+ (http://quantlib.org/) to Scala. The basic structure and design of the library has been
+ preserved, but the naming conventions, types, collection classes and implementation
+ have been modified to support common Scala idioms.
+
+ See the full license in the license file (LICENSE.txt)
+*/
+
 package com.soliscode.finance.quant.time
 
-import java.time.{DayOfWeek, LocalDate, Period}
 import java.time.temporal.{ChronoUnit, TemporalAdjusters, TemporalUnit}
+import java.time.{DayOfWeek, LocalDate, Period}
 
 import com.soliscode.finance.quant.time.BusinessDayConvention.{Following, Preceding}
 
-import scala.collection.mutable
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 object Calendar {
   def holidayList(cal: Calendar, from: LocalDate, to: LocalDate, includeWeekEnds: Boolean): List[LocalDate] = {
@@ -96,5 +110,11 @@ abstract class Calendar {
 
   def endOfMonth(date: LocalDate): LocalDate =
     Preceding.adjust(date.`with`(TemporalAdjusters.lastDayOfMonth()), this)
+}
+
+object NullCalendar extends Calendar {
+  override def name: String = "None"
+  override def isNormalBusinessDay(date: LocalDate): Boolean = true
+  override def isWeekend(dayOfWeek: DayOfWeek): Boolean = false
 }
 

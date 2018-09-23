@@ -1,7 +1,21 @@
+/*
+ Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl
+ Copyright (C) 2018 Evan Bergstrom
+
+ This file is provided under the BSD open software license. This is a port of QuantLib,
+ a free-software/open-source library for financial quantitative analysts and developers
+ (http://quantlib.org/) to Scala. The basic structure and design of the library has been
+ preserved, but the naming conventions, types, collection classes and implementation
+ have been modified to support common Scala idioms.
+
+ See the full license in the license file (LICENSE.txt)
+*/
+
 package com.soliscode.finance.quant.time
 
 import java.time.temporal.ChronoUnit
-import java.time.LocalDate
+import java.time.{LocalDate, Month}
 
 object Dates {
 
@@ -13,8 +27,18 @@ object Dates {
     def isNotBefore(d2: LocalDate): Boolean =
       d.isAfter(d2) || d.isEqual(d2)
 
+    def < (d2: LocalDate): Boolean = d.isBefore(d2)
+    def > (d2: LocalDate): Boolean = d.isAfter(d2)
+    def <= (d2: LocalDate): Boolean = d.isNotAfter(d2)
+    def >= (d2: LocalDate): Boolean = d.isNotBefore(d2)
+    def == (d2: LocalDate): Boolean = d.isEqual(d2)
+    def != (d2: LocalDate): Boolean = !d.isEqual(d2)
+
     def dayCountUntil(d2: LocalDate): Long =
       ChronoUnit.DAYS.between(d, d2)
+
+    def endOfYear(i: Int = 0): LocalDate =
+      LocalDate.of(d.getYear + i, Month.DECEMBER, 31)
   }
 
   def max(d1: LocalDate, d2: LocalDate): LocalDate =

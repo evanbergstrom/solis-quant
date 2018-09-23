@@ -1,8 +1,8 @@
 package com.soliscode.finance.quant.math.solvers1d
 
-import org.scalatest.FlatSpec
+import com.soliscode.finance.quant.QuantSpec
 
-class NewtonSafeTest extends FlatSpec {
+class NewtonSafeTest extends QuantSpec {
   import SolverFixture._
 
   "NewtonSafe" should "solve with the guess on the left side of the root for an increasing function" in {
@@ -35,6 +35,4 @@ class NewtonSafeTest extends FlatSpec {
     // special care)
     testNotBracketed(NewtonSafe(), f3, 1.00001)
   }
-
-
 }

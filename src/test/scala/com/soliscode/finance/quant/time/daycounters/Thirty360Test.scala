@@ -1,13 +1,13 @@
 package com.soliscode.finance.quant.time.daycounters
 
 import java.time.LocalDate
-
-import com.soliscode.finance.quant.time.daycounters.Thirty360.BondBasis
-import org.scalatest.FlatSpec
 import java.time.Month._
 
+import com.soliscode.finance.quant.QuantSpec
+import com.soliscode.finance.quant.time.daycounters.Thirty360.BondBasis
 
-class Thirty360Test extends FlatSpec{
+
+class Thirty360Test extends QuantSpec {
 
   "Thirty360(BondBasis)" should "handle end dates that are not the last day of february" in {
     val dc = Thirty360(BondBasis)

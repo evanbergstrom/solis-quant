@@ -4,18 +4,18 @@ package com.soliscode.finance.quant.time
 import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, Month, Period}
 
+import com.soliscode.finance.quant.QuantSpec
 import com.soliscode.finance.quant.time.BusinessDayConvention._
 import com.soliscode.finance.quant.time.calendars.UnitedStates
 import com.soliscode.finance.quant.time.calendars.UnitedStates.Settlement
-import org.scalatest.FlatSpec
 
 import scala.collection.JavaConverters._
 
-class BusinessDayConventionTest extends FlatSpec {
+class BusinessDayConventionTest extends QuantSpec {
 
-  val testCal = UnitedStates.withMarket(Settlement)
-  val testRangeFrom = LocalDate.of(2018, Month.JANUARY, 1)
-  val testRangeTo = LocalDate.of(2018, Month.DECEMBER, 31)
+  val testCal: Calendar = UnitedStates.withMarket(Settlement)
+  val testRangeFrom: LocalDate = LocalDate.of(2018, Month.JANUARY, 1)
+  val testRangeTo: LocalDate = LocalDate.of(2018, Month.DECEMBER, 31)
 
   def nextBusinessDay(d: LocalDate): LocalDate = {
     d.datesUntil(d.plusDays(7)).filter(b => testCal.isBusinessDay(b)).findFirst.get

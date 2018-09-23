@@ -3,11 +3,11 @@ package com.soliscode.finance.quant.time.calendars
 import java.time.Month._
 import java.time.{DayOfWeek, LocalDate}
 
+import com.soliscode.finance.quant.QuantSpec
 import com.soliscode.finance.quant.time.DateIterator
 import com.soliscode.finance.quant.time.calendars.UnitedStates.{GovernmentBond, Settlement}
-import org.scalatest.FlatSpec
 
-class UnitedStatesTest extends FlatSpec {
+class UnitedStatesTest extends QuantSpec {
 
   private def checkHolidays(expected: List[LocalDate], isHoliday: LocalDate => Boolean) : Unit = {
     expected.foreach(d => {
