@@ -14,6 +14,12 @@
 
 package com.soliscode.finance.quant
 
-class Instrument {
+import java.time.LocalDate
 
+abstract class Instrument {
+  var evaluationDate: LocalDate = LocalDate.now()
+
+//  def netPresentValue: Double
+//  def errorEstimate: Double
+  def isExpired: Boolean
 }

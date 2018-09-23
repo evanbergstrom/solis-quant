@@ -165,11 +165,12 @@ object CashFlows {
     }
   }
 
-  def bps(leg: Leg, discountCurve: YieldTermStructure, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Double =
-    bps(leg, discountCurve, includeSettlementDateFlows, settlementDate, settlementDate)
+  def basisPointSensitivity(leg: Leg, discountCurve: YieldTermStructure, includeSettlementDateFlows: Boolean,
+                            settlementDate: LocalDate): Double =
+    basisPointSensitivity(leg, discountCurve, includeSettlementDateFlows, settlementDate, settlementDate)
 
-  def bps(leg: Leg, discountCurve: YieldTermStructure, includeSettlementDateFlows: Boolean, settlementDate: LocalDate,
-          npvDate: LocalDate): Double = {
+  def basisPointSensitivity(leg: Leg, discountCurve: YieldTermStructure, includeSettlementDateFlows: Boolean,
+                            settlementDate: LocalDate, npvDate: LocalDate): Double = {
     if (leg.isEmpty) return 0.0
     val calc = new BPSCalculator(discountCurve)
     leg.filter(cf => cf.willReceive(settlementDate, includeSettlementDateFlows)).foreach(cf => cf.accept(calc))
@@ -321,7 +322,7 @@ object CashFlows {
 
     override def apply(x: Double): Double = {
       val yieldX = InterestRate(x, dayCounter, comp, freq)
-      npv - CashFlows.npv(leg, yieldX, includeSettlementDateFlows, settlementDate, npvDate)
+      npv - CashFlows.netPresentValue(leg, yieldX, includeSettlementDateFlows, settlementDate, npvDate)
     }
 
     override def derivative(x: Double): Double = {
@@ -352,7 +353,7 @@ object CashFlows {
     }
   }
 
-  def npv(leg: Leg, y: InterestRate, includeSettlementDateFlows: Boolean, settlementDate: LocalDate, npvDate: LocalDate): Double = {
+  def netPresentValue(leg: Leg, y: InterestRate, includeSettlementDateFlows: Boolean, settlementDate: LocalDate, npvDate: LocalDate): Double = {
     var discount = 1.0
     var lastDate = npvDate
 
@@ -366,22 +367,22 @@ object CashFlows {
       })
   }
 
-  def npv(leg: Leg, y: Double, dayCount: DayCounter, comp: Compounding, freq: Frequency,
+  def netPresentValue(leg: Leg, y: Double, dayCount: DayCounter, comp: Compounding, freq: Frequency,
           includeSettlementDateFlows: Boolean, settlementDate: LocalDate, npvDate: LocalDate): Unit =
-    npv(leg, InterestRate(y, dayCount, comp, freq), includeSettlementDateFlows, settlementDate, npvDate)
+    netPresentValue(leg, InterestRate(y, dayCount, comp, freq), includeSettlementDateFlows, settlementDate, npvDate)
 
-  def bps(leg: Leg, y: InterestRate, includeSettlementDateFlows: Boolean,
+  def basisPointSensitivity(leg: Leg, y: InterestRate, includeSettlementDateFlows: Boolean,
           settlementDate: LocalDate, npvDate: LocalDate): Double = {
 
     if (leg.isEmpty) return 0.0
 
     val flatRate = FlatForward(settlementDate, y.rate, y.dayCounter, y.compounding, y.frequency)
-    bps(leg, flatRate, includeSettlementDateFlows, settlementDate, npvDate)
+    basisPointSensitivity(leg, flatRate, includeSettlementDateFlows, settlementDate, npvDate)
   }
 
-  def bps(leg: Leg, y: Double, dc: DayCounter, comp: Compounding, freq: Frequency,
+  def basisPointSensitivity(leg: Leg, y: Double, dc: DayCounter, comp: Compounding, freq: Frequency,
           includeSettlementDateFlows: Boolean, settlementDate: LocalDate, npvDate: LocalDate): Double = {
-    bps(leg, InterestRate(y, dc, comp, freq), includeSettlementDateFlows, settlementDate, npvDate)
+    basisPointSensitivity(leg, InterestRate(y, dc, comp, freq), includeSettlementDateFlows, settlementDate, npvDate)
   }
 
   def yieldRate(solver: Solver1D, leg: Leg, npv: Double, dayCounter: DayCounter, compounding: Compounding,
@@ -458,13 +459,13 @@ object CashFlows {
                       npvDate: LocalDate): Double = {
     if (leg.isEmpty) return 0.0
 
-    val pv = npv(leg, rate, includeSettlementDateFlows, settlementDate, npvDate)
+    val npv = netPresentValue(leg, rate, includeSettlementDateFlows, settlementDate, npvDate)
     val d = duration(leg, rate, Modified, includeSettlementDateFlows, settlementDate, npvDate)
     val c = convexity(leg, rate, includeSettlementDateFlows, settlementDate, npvDate)
     val shift = 0.0001
 
     // bpv = delta + 0.5 * gamma   delta = -d * pv * shift   gamma = (c / 100.0) * pv * shift^2
-    (-d * pv * shift) + (0.5 * (c / 100.0) * pv * shift * shift)
+    (-d * npv * shift) + (0.5 * (c / 100.0) * npv * shift * shift)
   }
 
   def basisPointValue(leg: Leg, rate: Double, dayCounter: DayCounter, compounding: Compounding, frequency: Frequency,
@@ -476,7 +477,7 @@ object CashFlows {
                            npvDate: LocalDate): Double = {
     if (leg.isEmpty) return 0.0
 
-    val pv = npv(leg, rate, includeSettlementDateFlows, settlementDate, npvDate)
+    val pv = netPresentValue(leg, rate, includeSettlementDateFlows, settlementDate, npvDate)
     val d = duration(leg, rate, Modified, includeSettlementDateFlows, settlementDate, npvDate)
     val shift = 0.01
 
