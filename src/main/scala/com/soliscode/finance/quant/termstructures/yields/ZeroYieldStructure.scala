@@ -17,7 +17,7 @@ package com.soliscode.finance.quant.termstructures.yields
 import java.lang.Math._
 import java.time.LocalDate
 
-import com.soliscode.finance.quant.Quote
+import com.soliscode.finance.quant.quotes.Quote
 import com.soliscode.finance.quant.termstructures.YieldTermStructure
 import com.soliscode.finance.quant.time.{Calendar, DayCounter}
 

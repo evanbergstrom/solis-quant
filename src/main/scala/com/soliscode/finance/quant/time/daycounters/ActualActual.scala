@@ -71,7 +71,7 @@ class ActualActualIsma(var schedule: Schedule) extends DayCounter {
           val previousRef : LocalDate = if (schedule.dates.isEmpty) {
             refStart.minusMonths(months)
           } else {
-            schedule.calendar.advance(refStart, schedule.tenor.negated(), schedule.convention, schedule.endOfMonth)
+            schedule.calendar.advance(refStart, schedule.tenor.get.negated, schedule.convention, schedule.endOfMonth.get)
           }
 
           if (end.isAfter(refPeriodStart))

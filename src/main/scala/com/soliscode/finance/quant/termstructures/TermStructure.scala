@@ -17,13 +17,32 @@ package com.soliscode.finance.quant.termstructures
 import java.time.LocalDate
 
 import com.soliscode.finance.quant.math.interpolations.Extrapolator
+import com.soliscode.finance.quant.patterns.{Observable, Observer}
 import com.soliscode.finance.quant.time.{Calendar, DayCounter}
+import com.soliscode.finance.quant.time.Dates._
+import com.soliscode.finance.quant.math.Doubles._
 
-abstract class TermStructure(val referenceDate: LocalDate,
-                             val calendar: Calendar,
-                             val dayCounter: DayCounter) extends Extrapolator {
+abstract class TermStructure(val referenceDate: LocalDate, val calendar: Calendar, val dayCounter: DayCounter)
+  extends Extrapolator with Observer with Observable {
 
   def maxDate: LocalDate
-  def maxTime: Double
-  def timeFromReference(date: LocalDate): Double
+
+  def maxTime: Double = timeFromReference(maxDate)
+
+  def timeFromReference(date: LocalDate): Double = dayCounter.yearFraction(referenceDate, date)
+
+  def checkRange(date: LocalDate, extrapolate: Boolean): Unit = {
+    assert(date >= referenceDate, s"date ($date) before reference date ($referenceDate)")
+    assert(extrapolate || allowsExtrapolation || date <= maxDate, s"date ($date) is past max curve date ($maxDate)")
+  }
+
+  def checkRange(time: Double, extrapolate: Boolean): Unit = {
+    assert(time >= 0.0, s"negative time ($time) given")
+    assert(extrapolate || allowsExtrapolation || time <= maxTime || (time almost maxTime),
+      s"time ($time) is past max curve time ($maxTime)")
+  }
+
+  def update(): Unit = {
+    notifyObservers()
+  }
 }

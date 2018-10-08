@@ -14,8 +14,6 @@
 
 package com.soliscode.finance.quant.quotes
 
-import com.soliscode.finance.quant.Quote
-
 object SimpleQuote {
   def apply(value: Double): SimpleQuote = new SimpleQuote(value)
 }

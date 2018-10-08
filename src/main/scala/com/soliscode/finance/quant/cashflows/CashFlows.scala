@@ -52,13 +52,13 @@ object CashFlows {
   }
 
   def isExpired(leg: Leg, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Boolean =
-    leg.isEmpty || !leg.reverse.exists(cf => !cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    leg.isEmpty || !leg.reverse.exists(cf => !cf.hasOccurred(settlementDate, includeSettlementDateFlows))
 
   def previousCashFlow(leg: Leg, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Option[CashFlow] =
-    leg.reverse.find(cf => cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    leg.reverse.find(cf => cf.hasOccurred(settlementDate, includeSettlementDateFlows))
 
   def previousCashFlows(leg: Leg, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Seq[CashFlow] = {
-    val flows = leg.reverse.dropWhile(cf => !cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    val flows = leg.reverse.dropWhile(cf => !cf.hasOccurred(settlementDate, includeSettlementDateFlows))
     flows.headOption match {
       case Some(head) => flows.takeWhile(cf => cf.date.isEqual(head.date))
       case None => Seq.empty[CashFlow]
@@ -69,10 +69,10 @@ object CashFlows {
     previousCashFlows(leg, includeSettlementDateFlows, settlementDate).collectFirst { case cp: Coupon => cp }
 
   def nextCashFlow(leg: Leg, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Option[CashFlow] =
-    leg.find(cf => !cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    leg.find(cf => !cf.hasOccurred(settlementDate, includeSettlementDateFlows))
 
   def nextCashFlows(leg: Leg, includeSettlementDateFlows: Boolean, settlementDate: LocalDate): Seq[CashFlow] = {
-    val flows = leg.dropWhile(cf => cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    val flows = leg.dropWhile(cf => cf.hasOccurred(settlementDate, includeSettlementDateFlows))
     flows.headOption match {
       case Some(head) => flows.takeWhile(cf => cf.date.isEqual(head.date))
       case None => Seq.empty[CashFlow]
@@ -357,7 +357,7 @@ object CashFlows {
     var discount = 1.0
     var lastDate = npvDate
 
-    leg.filter(cf => !cf.hasOccured(settlementDate, includeSettlementDateFlows))
+    leg.filter(cf => !cf.hasOccurred(settlementDate, includeSettlementDateFlows))
       .foldLeft(0.0)((npv, cf) => {
         val amount = if (cf.tradingExCoupon(settlementDate)) 0.0 else cf.amount
         val factor = y.discountFactor(getStepwiseDiscountTime(cf, y.dayCounter, npvDate, lastDate))

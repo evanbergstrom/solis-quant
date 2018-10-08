@@ -55,7 +55,7 @@ abstract class Calendar {
     if (!isBusinessDay(date)) removedHolidays += date
   }
 
-  def advance(date: LocalDate, num: Int, unit: TemporalUnit, convention: BusinessDayConvention = Following,
+  def advance(date: LocalDate, num: Long, unit: TemporalUnit, convention: BusinessDayConvention = Following,
               endOfMonth: Boolean = false) : LocalDate = {
     if (num == 0) {
       convention.adjust(date, this)
@@ -75,11 +75,14 @@ abstract class Calendar {
     }
   }
 
-  def advance(date: LocalDate, period: Period, convention: BusinessDayConvention, endOfMonth: Boolean): LocalDate =
-  // TODO This is almost definitely not the right calculation to match the C++ library
-    advance(date, period.getDays, ChronoUnit.DAYS, convention, endOfMonth)
+  def advance(date: LocalDate, period: Period, convention: BusinessDayConvention, endOfMonth: Boolean): LocalDate = {
 
-  private def advanceBusinessDays(date: LocalDate, numberOfBusinessDays: Int): LocalDate = {
+    var result = date
+    period.getUnits.asScala.foreach(unit => result = advance(result, period.get(unit), unit, convention, endOfMonth))
+    result
+  }
+
+  private def advanceBusinessDays(date: LocalDate, numberOfBusinessDays: Long): LocalDate = {
     var n = numberOfBusinessDays
     var result = date
     if (n > 0) {

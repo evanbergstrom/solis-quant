@@ -17,9 +17,10 @@ package com.soliscode.finance.quant.termstructures
 import java.time.LocalDate
 
 import com.soliscode.finance.quant.math.interpolations.Extrapolator
+import com.soliscode.finance.quant.quotes.Quote
 import com.soliscode.finance.quant.time.Dates._
 import com.soliscode.finance.quant.time.{Annual, Calendar, DayCounter, Frequency}
-import com.soliscode.finance.quant.{Compounding, InterestRate, Quote}
+import com.soliscode.finance.quant.{Compounding, InterestRate}
 
 object YieldTermStructure {
   def annualJumpDates(referenceDate: LocalDate, nJumps: Int): List[LocalDate] =
@@ -93,10 +94,7 @@ abstract class YieldTermStructure(override val referenceDate: LocalDate,
     InterestRate.impliedRate(compound, dayCounter, compounding, frequency, t)
   }
 
-  def timeFromReference(date: LocalDate): Double =
-    dayCounter.yearFraction(referenceDate, date)
-
-  private def checkRange(d: LocalDate, extrapolate: Boolean): Unit = {
+  override def checkRange(d: LocalDate, extrapolate: Boolean): Unit = {
     assert(d.isNotBefore(referenceDate), s"date ($d) before reference date ($referenceDate")
     assert(extrapolate || allowsExtrapolation || d.isNotAfter(maxDate), s"date ($d) is past max curve date ($maxDate)")
   }

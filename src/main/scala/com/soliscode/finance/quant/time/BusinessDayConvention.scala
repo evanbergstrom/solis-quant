@@ -15,13 +15,20 @@
 package com.soliscode.finance.quant.time
 
 import java.time.LocalDate
-
+import com.soliscode.finance.quant.time.Dates._
 /**
   * These conventions specify the algorithm used to adjust a date in case
   * it is not a valid business day.
   */
 sealed trait BusinessDayConvention {
+
   def adjust(date: LocalDate, calendar: Calendar) : LocalDate
+
+  def equalWhenAdjusted(d1: LocalDate, d2: LocalDate, calendar: Calendar): Boolean =
+    adjust(d1, calendar).isEqual(adjust(d2, calendar))
+
+  def adjustToEndOfMonth(d: LocalDate, calendar: Calendar): LocalDate =
+    calendar.endOfMonth(d)
 }
 
 
@@ -90,7 +97,10 @@ object BusinessDayConvention {
     * Do not adjust.
     */
   case object Unadjusted extends BusinessDayConvention {
+
     override def adjust(date: LocalDate, calendar: Calendar): LocalDate = date
+
+    override def adjustToEndOfMonth(date: LocalDate, calendar: Calendar): LocalDate = date.endOfMonth()
   }
 
   /**

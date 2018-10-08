@@ -18,10 +18,8 @@ import java.time.LocalDate
 
 import com.soliscode.finance.quant.Event
 
-import scala.collection.mutable.ListBuffer
-
 object CashFlow {
-  type Leg = ListBuffer[CashFlow]
+  type Leg = Seq[CashFlow]
 }
 
 trait CashFlow extends Event {
@@ -30,10 +28,10 @@ trait CashFlow extends Event {
   def amount : Double
   val exCouponDate : Option[LocalDate]
 
-  def hasOccured(refDate: LocalDate, includeRefDate: Boolean = true) : Boolean = {
+  override def hasOccurred(date: LocalDate, includeRefDate: Boolean = true): Boolean = {
     val now = LocalDate.now()
-    if (!refDate.equals(now))
-      refDate.isBefore(now)
+    if (!date.equals(now))
+      date.isBefore(now)
     else
       includeRefDate
   }
@@ -46,7 +44,7 @@ trait CashFlow extends Event {
   }
 
   def willReceive(refDate: LocalDate, includeRefDate: Boolean = true): Boolean =
-    !hasOccured(refDate, includeRefDate) && !tradingExCoupon(refDate)
+    !hasOccurred(refDate, includeRefDate) && !tradingExCoupon(refDate)
 
   def earlierThan(c: CashFlow): Boolean =
     date.isBefore(c.date)

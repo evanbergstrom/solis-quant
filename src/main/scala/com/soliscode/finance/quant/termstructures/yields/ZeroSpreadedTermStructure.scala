@@ -16,9 +16,10 @@ package com.soliscode.finance.quant.termstructures.yields
 
 import java.time.LocalDate
 
+import com.soliscode.finance.quant.quotes.Quote
 import com.soliscode.finance.quant.termstructures.YieldTermStructure
 import com.soliscode.finance.quant.time.{Frequency, NoFrequency}
-import com.soliscode.finance.quant.{Compounding, Continuous, InterestRate, Quote}
+import com.soliscode.finance.quant.{Compounding, Continuous, InterestRate}
 
 
 class ZeroSpreadedTermStructure(curve: YieldTermStructure, spread: Quote, compounding: Compounding, frequency: Frequency)
@@ -32,6 +33,5 @@ class ZeroSpreadedTermStructure(curve: YieldTermStructure, spread: Quote, compou
   }
 
   override def maxDate: LocalDate = curve.maxDate
-
   override def maxTime: Double = curve.maxTime
 }

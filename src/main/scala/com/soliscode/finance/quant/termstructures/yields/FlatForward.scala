@@ -15,10 +15,10 @@ package com.soliscode.finance.quant.termstructures.yields
 
 import java.time.LocalDate
 
-import com.soliscode.finance.quant.quotes.SimpleQuote
+import com.soliscode.finance.quant.quotes.{Quote, SimpleQuote}
 import com.soliscode.finance.quant.termstructures.YieldTermStructure
 import com.soliscode.finance.quant.time._
-import com.soliscode.finance.quant.{Compounding, Continuous, InterestRate, Quote}
+import com.soliscode.finance.quant.{Compounding, Continuous, InterestRate}
 
 object FlatForward {
 

@@ -1,6 +1,6 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value=" Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl&#10; Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl&#10; Copyright (C) 2018 Evan Bergstrom&#10;&#10;This file is provided under the BSD open software licemnse. This is a port of QuantLib, a free-software/open-source library for financial quantitative analysts and developers (http://quantlib.org/) to Scala. The basic structure and design of the library has been preserved, but thebnaming conventions, basic types, collection classes and implementation have been modified to support common Scala idioms.&#10;&#10;See the full license in the license file (LICENSE.txt)" />
+    <option name="notice" value=" Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl&#10; Copyright (C) 2003, 2004, 2005, 2007 StatPro Italia srl&#10; Copyright (C) 2018 Evan Bergstrom&#10;&#10;This file is provided under the BSD open software licemnse. This is a port of QuantLib, a &#10;free-software/open-source library for financial quantitative analysts and developers &#10;(http://quantlib.org/) to Scala. The basic structure and design of the library has been &#10;preserved, but thebnaming conventions, basic types, collection classes and implementation &#10;have been modified to support common Scala idioms.&#10;&#10;See the full license in the license file (LICENSE.txt)" />
     <option name="myName" value="solis-quant" />
   </copyright>
 </component>
